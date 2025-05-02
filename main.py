@@ -33,14 +33,16 @@ class CustomerManager:
     def print_discount(self, total):
         if total > self.discount_threshold:
             print("Eligible for discount")
-        elif total > 1000:
-            print("VIP Customer!")
-        elif total > 800:
-            print("Priority Customer")
-        elif total > 300:
-            print("Potential future discount customer")
-        else:
-            print("No discount")
+
+        match total:
+            case total if total > 1000:
+                print("VIP Customer!")
+            case total if total > 800:
+                print("Priority Customer")
+            case total if total > 300:
+                print("Potential future discount customer")
+            case _:
+                print("No discount")
 
 
     def calculate_shipping_fee(self, purchases):
