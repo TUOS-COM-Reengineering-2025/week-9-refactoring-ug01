@@ -77,5 +77,37 @@ class TestCustomerManager(unittest.TestCase):
         fee_fragile = calculate_shipping_fee_for_fragile_items(purchases)
         self.assertEqual(fee_fragile, 25)
 
+    def test_print_discount(self):
+        cm = CustomerManager()
+
+        # Capture printed output
+        captured = io.StringIO()
+        with contextlib.redirect_stdout(captured):
+            cm.print_discount(600)  # Total above discount threshold
+
+        output = captured.getvalue()
+        self.assertIn("Eligible for discount", output)
+
+        # Test for other thresholds
+        with contextlib.redirect_stdout(captured):
+            cm.print_discount(1200)  # Total above VIP threshold
+        output = captured.getvalue()
+        self.assertIn("VIP Customer!", output)
+
+        with contextlib.redirect_stdout(captured):
+            cm.print_discount(850)  # Total above Priority threshold
+        output = captured.getvalue()
+        self.assertIn("Priority Customer", output)
+
+        with contextlib.redirect_stdout(captured):
+            cm.print_discount(400)  # Total above Potential discount threshold
+        output = captured.getvalue()
+        self.assertIn("Potential future discount customer", output)
+
+        with contextlib.redirect_stdout(captured):
+            cm.print_discount(200)  # Total below all thresholds
+        output = captured.getvalue()
+        self.assertIn("No discount", output)
+
 if __name__ == "__main__":
     unittest.main()
