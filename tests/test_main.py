@@ -44,10 +44,10 @@ class TestCustomerManager(unittest.TestCase):
         cm = CustomerManager()
         name = "Alice"
         purchases = [{'price': 50, 'item': 'banana'}, {'price': 80, 'item': 'apple'}]
-        cm.add_purchase(name, purchases)
+        cm.add_purchases(name, purchases)
 
         self.assertEqual(
-            {name: [purchases]},
+            {name: purchases},
             cm.customers
         )
 
