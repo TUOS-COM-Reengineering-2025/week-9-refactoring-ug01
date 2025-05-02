@@ -65,6 +65,22 @@ class TestCustomerManager(unittest.TestCase):
         self.assertIn("Bob", output)
         self.assertIn("Eligible for discount", output)
 
+    def test_generate_report_no_tax(self):
+        cm = CustomerManager()
+        cm.add_customer("Charlie", [{'price': 50, 'item': 'grape'}])  # Below tax threshold
+
+        # Capture printed output
+        captured = io.StringIO()
+        with contextlib.redirect_stdout(captured):
+            cm.generate_report()
+
+        output = captured.getvalue()
+
+        # Check that the customer name is in the output
+        self.assertIn("Charlie", output)
+        # Check that the total price (50) is processed correctly
+        self.assertIn("No discount", output)
+
     def test_heavy_item_shipping_fee(self):
         cm = CustomerManager()
         purchases = [{'price': 100, 'weight': 25}]
