@@ -19,26 +19,26 @@ class CustomerManager:
         self.add_customer(name, purchases)
 
     def generate_report(self):
-        for y, x in self.customers.items():
-            a = 0
-            for z in x:
-                if z['price'] > self.tax_threshold:
-                    taxed_price = z['price'] * (1 + self.tax_rate)
-                    a += taxed_price
+        for customer_name, purchases in self.customers.items():
+            total = 0
+            for item in purchases:
+                if item['price'] > self.tax_threshold:
+                    taxed_price = item['price'] * (1 + self.tax_rate)
+                    total += taxed_price
                 else:
-                    a += z['price']
-            print(y)
-            if a > self.discount_threshold:
+                    total += item['price']
+            print(customer_name)
+            if total > self.discount_threshold:
                 print("Eligible for discount")
             else:
-                if a > 300:
+                if total > 300:
                     print("Potential future discount customer")
                 else:
                     print("No discount")
-            if a > 1000:
+            if total > 1000:
                 print("VIP Customer!")
             else:
-                if a > 800:
+                if total > 800:
                     print("Priority Customer")
 
     def calculate_shipping_fee(self, purchases):
